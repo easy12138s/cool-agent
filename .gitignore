@@ -1,0 +1,54 @@
+# Virtual environments
+venv/
+.env/
+.venv/
+*.venv/
+env/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+logs/
+*.log
+agent.log
+
+# Testing
+.coverage
+coverage.xml
+pytest_cache/
+
+# Build
+build/
+dist/
+*.egg-info/
+
+# Environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Documentation
+_site/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+.trae/
