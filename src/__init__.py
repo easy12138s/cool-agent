@@ -5,7 +5,7 @@ __author__ = "Your Name"
 __email__ = "your.email@example.com"
 
 from .config import settings
-from .core import Agent
+from .agents import Agent
 from .models import LLMClient
 from .tools import ToolRegistry
 from .memory import BaseMemory

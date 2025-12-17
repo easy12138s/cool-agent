@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from typing import Any, Dict, List
 
 from src.config import settings
-from src.core import Agent
+from src.agents import Agent
 from src.models import LLMClient
 
 # Configure logging

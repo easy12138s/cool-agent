@@ -3,7 +3,7 @@
 import pytest
 from typing import Any, Dict, Optional
 
-from src.core import Agent
+from src.agents import Agent
 from src.models import LLMClient
 from src.tools import ToolRegistry
 
