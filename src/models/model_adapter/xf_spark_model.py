@@ -19,7 +19,7 @@ class XFSparkModel(BaseModel):
 
     @property
     def name(self) -> str:
-        return self._name
+        return self._name·
     
     @property
     def provider(self) -> str:
