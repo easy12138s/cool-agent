@@ -1,5 +1,11 @@
-"""Memory module for the Intelligent Agent Project"""
+from .short_term_memory import ShortTermMemory
+from .long_term_memory import LongTermMemory
+from .context_management import ContextManagement
+from .context_desensitization import ContextDesensitization
 
-from .base_memory import BaseMemory
-
-__all__ = ["BaseMemory"]
+__all__ = [
+    "ShortTermMemory", 
+    "LongTermMemory",
+    "ContextManagement",
+    "ContextDesensitization"
+]
