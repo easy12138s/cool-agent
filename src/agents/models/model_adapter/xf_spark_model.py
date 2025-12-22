@@ -1,6 +1,6 @@
 from typing import Dict, Any
 from src.config import env
-from src.models import BaseModel
+from src.agents.models import BaseModel
 from openai import OpenAI
 
 

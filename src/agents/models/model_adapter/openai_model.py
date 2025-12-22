@@ -1,5 +1,5 @@
 from typing import List, Dict, Any
-from src.models import BaseModel
+from src.agents.models import BaseModel
 import aiohttp
 
 class OpenAIModel(BaseModel):
