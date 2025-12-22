@@ -1,9 +1,9 @@
 from dotenv import load_dotenv
 import os
+from .settings import *
 
 # 加载.env文件
 load_dotenv()
-
 
 class Env:
     def get(self, key, default=None):
