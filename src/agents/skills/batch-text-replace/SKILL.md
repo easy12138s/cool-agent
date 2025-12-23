@@ -1,6 +1,29 @@
 ---
 name: batch-text-replace
 description: 批量替换文件内容，支持多文件同时替换，支持正则表达式，适用于批量修改代码变量名、更新文档版本号等。
+parameters:
+  type: object
+  properties:
+    search_path:
+      type: string
+      description: 需替换文件所在的根目录
+    old_text:
+      type: string
+      description: 需要被替换的旧文本（或正则表达式）
+    new_text:
+      type: string
+      description: 替换后的新文本
+    file_filter:
+      type: string
+      description: 文件类型筛选（如 ".py,.md"）
+    is_regex:
+      type: boolean
+      description: 是否将 old_text 视为正则表达式
+      default: false
+  required:
+    - search_path
+    - old_text
+    - new_text
 compatibility: 支持 Windows/macOS/Linux，依赖 Python 3.6+，需文件系统读写权限。
 metadata:
   version: "1.0"

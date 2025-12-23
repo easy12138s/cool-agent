@@ -1,6 +1,29 @@
 ---
 name: batch-file-search
 description: 批量搜索文件内容，支持关键字匹配、正则表达式、文件类型筛选，适用于查找包含特定信息的文档。
+parameters:
+  type: object
+  properties:
+    search_path:
+      type: string
+      description: 搜索的根目录路径
+    keyword:
+      type: string
+      description: 搜索的关键词或正则表达式
+    is_regex:
+      type: boolean
+      description: 是否使用正则表达式
+      default: false
+    file_filter:
+      type: string
+      description: 文件类型筛选（如 ".txt,.md"，留空则搜索所有文本文件）
+    case_sensitive:
+      type: boolean
+      description: 是否区分大小写
+      default: false
+  required:
+    - search_path
+    - keyword
 compatibility: 支持 Windows/macOS/Linux，依赖 Python 3.6+，需文件系统读取权限。
 metadata:
   version: "1.0"

@@ -1,39 +1,32 @@
-"""MCP工具封装"""
 from typing import Dict, Any, List, Optional
-from dataclasses import dataclass, field
 import logging
+from .base_tool import BaseTool
 
 logger = logging.getLogger(__name__)
 
+class MCPBaseTool(BaseTool):
+    """MCP 工具的 BaseTool 适配器"""
+    
+    def __init__(self, name: str, description: str, input_schema: Dict[str, Any], client: Any, prefix: Optional[str] = None):
+        self._name = f"{prefix}_{name}" if prefix else name
+        self._raw_name = name # 保留原始名称用于调用
+        self._description = description
+        self._input_schema = input_schema
+        self.client = client # 引用所属的 MCPClient 以便执行
 
-@dataclass
-class MCPTool:
-    name: str
-    description: str
-    input_schema: Dict[str, Any] = field(default_factory=dict)
-    original_tool: Any = None
+    @property
+    def name(self) -> str:
+        return self._name
+
+    @property
+    def description(self) -> str:
+        return self._description
 
     @property
     def parameters(self) -> Dict[str, Any]:
-        return self.input_schema.get("properties", {})
+        return self._input_schema
 
-    @property
-    def required_params(self) -> List[str]:
-        return self.input_schema.get("required", [])
-
-    def to_dict(self) -> Dict[str, Any]:
-        return {
-            "name": self.name,
-            "description": self.description,
-            "inputSchema": self.input_schema
-        }
-
-    @classmethod
-    def from_mcp_tool(cls, mcp_tool: Any) -> "MCPTool":
-        tool_dict = mcp_tool.model_dump()
-        return cls(
-            name=tool_dict.get("name", ""),
-            description=tool_dict.get("description", ""),
-            input_schema=tool_dict.get("inputSchema", {"type": "object", "properties": {}}),
-            original_tool=mcp_tool
-        )
+    async def run(self, **kwargs) -> Any:
+        """通过 MCP Client 调用远程工具"""
+        # 调用时使用原始名称
+        return await self.client.call_tool(self._raw_name, kwargs)

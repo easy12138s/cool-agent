@@ -1,6 +1,26 @@
 ---
 name: batch-file-rename
 description: 批量重命名指定文件夹内的文件，支持添加前缀/后缀、文本替换、序号命名等规则，自动处理重复文件名，适用于文件整理、归档场景。
+parameters:
+  type: object
+  properties:
+    source_path:
+      type: string
+      description: 目标文件夹路径
+    rename_rule:
+      type: string
+      enum: ["add_prefix", "add_suffix", "replace_text", "add_sequence"]
+      description: 重命名规则
+    rule_params:
+      type: string
+      description: 规则参数（前缀/后缀字符串，或替换规则如 "old:new"，或起始序号）
+    file_filter:
+      type: string
+      description: 文件类型筛选（如 ".jpg,.png"）
+  required:
+    - source_path
+    - rename_rule
+    - rule_params
 compatibility: 支持 Windows/macOS/Linux，依赖 Python 3.6+，需文件系统读写权限。
 metadata:
   version: "1.1"

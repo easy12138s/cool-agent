@@ -1,6 +1,29 @@
 ---
 name: batch-file-create
 description: 批量新建指定格式的文件，支持自定义文件名模板、数量、文件类型，自动避免覆盖已有文件，适用于批量创建文档、模板文件等场景。
+parameters:
+  type: object
+  properties:
+    target_path:
+      type: string
+      description: 目标文件夹路径
+    file_template:
+      type: string
+      description: 文件名模板，必须包含 {num} 占位符（如 "Report_{num}.txt"）
+    create_count:
+      type: integer
+      description: 创建数量
+    file_content:
+      type: string
+      description: 文件初始内容
+    overwrite:
+      type: boolean
+      description: 是否覆盖同名文件
+      default: false
+  required:
+    - target_path
+    - file_template
+    - create_count
 compatibility: 支持 Windows/macOS/Linux，依赖 Python 3.6+，需文件系统读写权限。
 metadata:
   version: "1.1"

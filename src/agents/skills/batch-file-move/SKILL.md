@@ -1,6 +1,30 @@
 ---
 name: batch-file-move
 description: 批量移动指定文件夹内的文件到目标路径，支持按文件类型/名称筛选，自动处理重复文件，适用于文件分类、归档场景。
+parameters:
+  type: object
+  properties:
+    source_path:
+      type: string
+      description: 源文件夹路径
+    target_path:
+      type: string
+      description: 目标文件夹路径
+    file_filter:
+      type: string
+      description: 筛选规则（后缀如 ".jpg" 或名称关键词）
+    move_subfolders:
+      type: boolean
+      description: 是否包含子文件夹
+      default: false
+    duplicate_strategy:
+      type: string
+      enum: ["rename", "overwrite", "skip"]
+      description: 重复处理策略
+      default: "rename"
+  required:
+    - source_path
+    - target_path
 compatibility: 支持 Windows/macOS/Linux，依赖 Python 3.6+，需文件系统读写权限。
 metadata:
   version: "1.1"
