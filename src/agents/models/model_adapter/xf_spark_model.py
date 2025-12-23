@@ -36,7 +36,7 @@ class XFSparkModel(BaseModel):
         )
 
         completion = client.chat.completions.create(
-            model=self._model, # 指定请求的版本
+            model=self._model,  # 指定请求的模型版本
             messages=[
                 {
                     "role": "user",

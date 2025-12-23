@@ -21,6 +21,11 @@ class BaseModel(ABC):
     @abstractmethod
     async def generate(self, prompt: str, **kwargs) -> str:
         pass
+
+    async def stream_generate(self, prompt: str, **kwargs):
+        """Default implementation for non-streaming models (yields once)."""
+        response = await self.generate(prompt, **kwargs)
+        yield response
     
     def get_model_info(self) -> Dict[str, Any]:
         return {
