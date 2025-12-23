@@ -4,8 +4,8 @@ from .context_management import ContextManagement
 from .context_desensitization import ContextDesensitization
 
 __all__ = [
-    "ShortTermMemory", 
+    "ShortTermMemory",
     "LongTermMemory",
     "ContextManagement",
-    "ContextDesensitization"
+    "ContextDesensitization",
 ]

@@ -4,15 +4,23 @@ from .base_tool import BaseTool
 
 logger = logging.getLogger(__name__)
 
+
 class MCPBaseTool(BaseTool):
     """MCP 工具的 BaseTool 适配器"""
-    
-    def __init__(self, name: str, description: str, input_schema: Dict[str, Any], client: Any, prefix: Optional[str] = None):
+
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        input_schema: Dict[str, Any],
+        client: Any,
+        prefix: Optional[str] = None,
+    ):
         self._name = f"{prefix}_{name}" if prefix else name
-        self._raw_name = name # 保留原始名称用于调用
+        self._raw_name = name  # 保留原始名称用于调用
         self._description = description
         self._input_schema = input_schema
-        self.client = client # 引用所属的 MCPClient 以便执行
+        self.client = client  # 引用所属的 MCPClient 以便执行
 
     @property
     def name(self) -> str:

@@ -8,10 +8,10 @@ class BaseAgent(ABC):
     Agent抽象基类
     """
 
-    STATUS_IDLE = "idle"       # 空闲
-    STATUS_WORKING = "working" # 执行中
-    STATUS_ERROR = "error"     # 异常
-    STATUS_COMPLETED = "completed" # 完成
+    STATUS_IDLE = "idle"  # 空闲
+    STATUS_WORKING = "working"  # 执行中
+    STATUS_ERROR = "error"  # 异常
+    STATUS_COMPLETED = "completed"  # 完成
 
     def __init__(self):
         self.status = self.STATUS_IDLE
@@ -98,7 +98,9 @@ class BaseAgent(ABC):
             self.error_info = str(e)
 
     @staticmethod
-    def format_prompt(prompt_template: str, placeholder_dict: Dict[str, Any], default: Any = "") -> str:
+    def format_prompt(
+        prompt_template: str, placeholder_dict: Dict[str, Any], default: Any = ""
+    ) -> str:
         """
         通用方法：动态拼接提示词，替换模板中的占位符
         """

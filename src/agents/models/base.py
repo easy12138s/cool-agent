@@ -7,12 +7,12 @@ class BaseModel(ABC):
     @abstractmethod
     def name(self) -> str:
         pass
-    
+
     @property
     @abstractmethod
     def provider(self) -> str:
         pass
-    
+
     @property
     @abstractmethod
     def function_calling(self) -> bool:
@@ -26,9 +26,6 @@ class BaseModel(ABC):
         """Default implementation for non-streaming models (yields once)."""
         response = await self.generate(prompt, **kwargs)
         yield response
-    
+
     def get_model_info(self) -> Dict[str, Any]:
-        return {
-            "name": self.name,
-            "provider": self.provider
-        }
+        return {"name": self.name, "provider": self.provider}

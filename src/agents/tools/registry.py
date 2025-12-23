@@ -11,9 +11,10 @@ from .mcp_config import MCPConfig
 
 logger = logging.getLogger(__name__)
 
+
 class SkillTool(BaseTool):
     """基于 SKILL.md 定义的本地技能工具"""
-    
+
     def __init__(self, skill_dir: Path, script_path: Optional[Path] = None):
         self.skill_dir = skill_dir
         self.skill_md_path = skill_dir / "SKILL.md"
@@ -21,7 +22,7 @@ class SkillTool(BaseTool):
         self._description = ""
         self._parameters = {"type": "object", "properties": {}, "required": []}
         self.script_path = script_path
-        
+
         self._load_skill_md()
 
     def _load_skill_md(self):
@@ -31,7 +32,7 @@ class SkillTool(BaseTool):
 
         with open(self.skill_md_path, "r", encoding="utf-8") as f:
             content = f.read()
-            
+
         # 解析 YAML Front Matter
         if content.startswith("---"):
             try:
@@ -39,7 +40,7 @@ class SkillTool(BaseTool):
                 metadata = yaml.safe_load(front_matter)
                 self._name = metadata.get("name", self.skill_dir.name)
                 self._description = metadata.get("description", "")
-                
+
                 # 从正文中解析参数
                 if "parameters" in metadata:
                     self._parameters = metadata["parameters"]
@@ -64,13 +65,15 @@ class SkillTool(BaseTool):
         """运行脚本执行技能"""
         if not self.script_path or not self.script_path.exists():
             raise FileNotFoundError(f"找不到执行脚本: {self.script_path}")
-        
+
         # 动态加载并运行脚本中的 run 函数
         try:
-            spec = importlib.util.spec_from_file_location("skill_script", self.script_path)
+            spec = importlib.util.spec_from_file_location(
+                "skill_script", self.script_path
+            )
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
-            
+
             if hasattr(module, "run"):
                 if asyncio.iscoroutinefunction(module.run):
                     return await module.run(**kwargs)
@@ -82,18 +85,25 @@ class SkillTool(BaseTool):
             logger.error(f"执行技能 {self.name} 失败: {e}")
             return {"error": str(e)}
 
+
 class ToolRegistry:
     """工具注册表 - 负责自动发现和管理所有工具"""
-    
+
     def __init__(self, skills_dir: str = None, scripts_dir: str = None):
         # 默认路径
         root_dir = Path(__file__).parent.parent.parent.parent
-        self.skills_dir = Path(skills_dir) if skills_dir else root_dir / "src" / "agents" / "skills"
-        self.scripts_dir = Path(scripts_dir) if scripts_dir else root_dir / "src" / "agents" / "tools" / "scripts"
-        
+        self.skills_dir = (
+            Path(skills_dir) if skills_dir else root_dir / "src" / "agents" / "skills"
+        )
+        self.scripts_dir = (
+            Path(scripts_dir)
+            if scripts_dir
+            else root_dir / "src" / "agents" / "tools" / "scripts"
+        )
+
         self._tools: Dict[str, BaseTool] = {}
         self._mcp_clients: Dict[str, MCPClient] = {}
-        
+
     def scan_skills(self):
         """扫描 skills 目录并自动注册工具"""
         if not self.skills_dir.exists():
@@ -105,9 +115,11 @@ class ToolRegistry:
                 # 寻找匹配的脚本
                 script_name = self._map_skill_to_script(skill_path.name)
                 script_path = self.scripts_dir / f"{script_name}.py"
-                
+
                 try:
-                    tool = SkillTool(skill_path, script_path if script_path.exists() else None)
+                    tool = SkillTool(
+                        skill_path, script_path if script_path.exists() else None
+                    )
                     if tool.name:
                         self.register(tool)
                         logger.info(f"已自动注册技能工具: {tool.name}")
@@ -118,7 +130,9 @@ class ToolRegistry:
         """将技能文件夹名映射为脚本文件名"""
         # 规则：batch-file-search -> batch_search
         # 规则：batch-text-replace -> batch_replace
-        name = skill_name.replace("-file-", "_").replace("-text-", "_").replace("-", "_")
+        name = (
+            skill_name.replace("-file-", "_").replace("-text-", "_").replace("-", "_")
+        )
         return name
 
     def register(self, tool: BaseTool):
@@ -138,7 +152,7 @@ class ToolRegistry:
         return [tool.to_openai_tool() for tool in self._tools.values()]
 
     # --- MCP 服务器管理 ---
-    
+
     async def register_mcp_server(self, server_id: str, config: MCPConfig):
         """注册并连接一个 MCP 服务器"""
         if server_id in self._mcp_clients:
@@ -151,7 +165,7 @@ class ToolRegistry:
             tools = await client.list_tools(prefix=server_id)
             for tool in tools:
                 self._tools[tool.name] = tool
-            
+
             self._mcp_clients[server_id] = client
             logger.info(f"已成功注册 MCP 服务器 {server_id}，新增 {len(tools)} 个工具")
         except Exception as e:
@@ -163,13 +177,14 @@ class ToolRegistry:
         if server_id in self._mcp_clients:
             client = self._mcp_clients.pop(server_id)
             await client.disconnect()
-            
+
             # 移除该服务器关联的所有工具
             prefix = f"{server_id}_"
             keys_to_remove = [k for k in self._tools if k.startswith(prefix)]
             for k in keys_to_remove:
                 self._tools.pop(k)
             logger.info(f"已注销 MCP 服务器 {server_id}")
+
 
 # 全局默认注册表
 default_registry = ToolRegistry()

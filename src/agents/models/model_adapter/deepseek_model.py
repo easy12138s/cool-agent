@@ -16,5 +16,5 @@ class DeepSeekModel(OpenAICompatibleModel):
             config["name"] = env.get("DEEPSEEK_MODEL_ID", "deepseek-chat")
         if "provider" not in config:
             config["provider"] = "deepseek"
-            
+
         super().__init__(config)

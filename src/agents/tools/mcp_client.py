@@ -1,4 +1,5 @@
 """MCP客户端核心实现"""
+
 import logging
 from typing import Dict, Any, List, Optional
 from contextlib import asynccontextmanager, AsyncExitStack
@@ -12,6 +13,7 @@ try:
     from mcp import ClientSession
     from mcp.client.stdio import stdio_client, StdioServerParameters
     from mcp.client.sse import sse_client
+
     HAS_MCP = True
 except ImportError:
     logger.warning("未安装 mcp 库，MCP 功能将不可用。请运行 'pip install mcp' 安装。")
@@ -36,25 +38,36 @@ class MCPClient:
     async def connect(self) -> None:
         """连接到MCP服务器"""
         if not HAS_MCP:
-            raise RuntimeError("未安装 mcp 库，无法使用 MCP 功能。请运行 'pip install mcp' 安装。")
-        
+            raise RuntimeError(
+                "未安装 mcp 库，无法使用 MCP 功能。请运行 'pip install mcp' 安装。"
+            )
+
         try:
             if self.config.transport == TransportType.STDIO:
                 server_params = StdioServerParameters(
                     command=self.config.command or "python",
                     args=self.config.args or [],
-                    env=self.config.env
+                    env=self.config.env,
                 )
-                read, write = await self._exit_stack.enter_async_context(stdio_client(server_params))
-            elif self.config.transport in [TransportType.HTTP_SSE, TransportType.HTTP_STREAMABLE]:
+                read, write = await self._exit_stack.enter_async_context(
+                    stdio_client(server_params)
+                )
+            elif self.config.transport in [
+                TransportType.HTTP_SSE,
+                TransportType.HTTP_STREAMABLE,
+            ]:
                 url = self.config.url or ""
-                read, write = await self._exit_stack.enter_async_context(sse_client(url))
+                read, write = await self._exit_stack.enter_async_context(
+                    sse_client(url)
+                )
             else:
                 raise ValueError(f"不支持的传输类型: {self.config.transport}")
 
-            self.session = await self._exit_stack.enter_async_context(ClientSession(read, write))
+            self.session = await self._exit_stack.enter_async_context(
+                ClientSession(read, write)
+            )
             await self.session.initialize()
-            
+
             self._connected = True
             logger.info(f"成功连接到MCP服务器: {self.config.transport.value}")
 
@@ -80,13 +93,17 @@ class MCPClient:
         tools = []
         for tool in result.tools:
             tool_dict = tool.model_dump()
-            tools.append(MCPBaseTool(
-                name=tool_dict.get("name", ""),
-                description=tool_dict.get("description", ""),
-                input_schema=tool_dict.get("inputSchema", {"type": "object", "properties": {}}),
-                client=self,
-                prefix=prefix
-            ))
+            tools.append(
+                MCPBaseTool(
+                    name=tool_dict.get("name", ""),
+                    description=tool_dict.get("description", ""),
+                    input_schema=tool_dict.get(
+                        "inputSchema", {"type": "object", "properties": {}}
+                    ),
+                    client=self,
+                    prefix=prefix,
+                )
+            )
         return tools
 
     async def call_tool(self, name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
@@ -97,7 +114,7 @@ class MCPClient:
         result = await self.session.call_tool(name, arguments)
         return {
             "content": [item.model_dump() for item in result.content],
-            "is_error": getattr(result, "isError", False)
+            "is_error": getattr(result, "isError", False),
         }
 
     async def list_resources(self) -> List[Dict[str, Any]]:

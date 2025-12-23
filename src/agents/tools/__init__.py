@@ -11,5 +11,5 @@ __all__ = [
     "TransportType",
     "MCPBaseTool",
     "MCPClient",
-    "default_registry"
+    "default_registry",
 ]

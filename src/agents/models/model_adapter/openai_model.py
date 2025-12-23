@@ -1,6 +1,7 @@
 from typing import Dict, Any
 from .openai_compatible import OpenAICompatibleModel
 
+
 class OpenAIModel(OpenAICompatibleModel):
     def __init__(self, config: Dict[str, Any]):
         # 设置 OpenAI 模型相关的默认配置
@@ -10,7 +11,7 @@ class OpenAIModel(OpenAICompatibleModel):
             config["model"] = "gpt-3.5-turbo"
         if "provider" not in config:
             config["provider"] = "openai"
-            
+
         super().__init__(config)
 
     # 保留批量生成接口，方便与旧代码兼容
@@ -28,8 +29,7 @@ class OpenAIModel(OpenAICompatibleModel):
     async def get_embedding(self, text: str, **kwargs) -> list[float]:
         try:
             response = await self.client.embeddings.create(
-                input=text,
-                model="text-embedding-ada-002"
+                input=text, model="text-embedding-ada-002"
             )
             return response.data[0].embedding
         except Exception as e:

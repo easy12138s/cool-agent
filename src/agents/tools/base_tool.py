@@ -1,21 +1,22 @@
 from typing import Dict, Any, List, Optional
 from abc import ABC, abstractmethod
 
+
 class BaseTool(ABC):
     """工具基类"""
-    
+
     @property
     @abstractmethod
     def name(self) -> str:
         """工具名称"""
         pass
-    
+
     @property
     @abstractmethod
     def description(self) -> str:
         """工具描述"""
         pass
-    
+
     @property
     @abstractmethod
     def parameters(self) -> Dict[str, Any]:
@@ -37,7 +38,7 @@ class BaseTool(ABC):
                 "parameters": {
                     "type": "object",
                     "properties": self.parameters.get("properties", {}),
-                    "required": self.parameters.get("required", [])
-                }
-            }
+                    "required": self.parameters.get("required", []),
+                },
+            },
         }
