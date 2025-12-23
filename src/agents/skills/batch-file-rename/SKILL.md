@@ -3,46 +3,34 @@ name: batch-file-rename
 description: 批量重命名指定文件夹内的文件，支持添加前缀/后缀、文本替换、序号命名等规则，自动处理重复文件名，适用于文件整理、归档场景。
 compatibility: 支持 Windows/macOS/Linux，依赖 Python 3.6+，需文件系统读写权限。
 metadata:
-  version: "1.0"
-  author: "Custom AI Agent"
+  version: "1.1"
+  author: "Cool Agent"
   update_time: "2025-12-23"
 ---
 
 # 批量重命名文件技能
 ## 适用场景
-当需要统一整理文件夹内的文件命名格式时使用，例如：
-- 给照片添加日期前缀（如 20240520_photo1.jpg）
-- 替换文件名中的错误字符（如把 "文档-副本" 改为 "文档"）
-- 给文件添加连续序号（如 report_1.pdf、report_2.pdf）
+- **照片整理**：添加日期前缀（"IMG_001.jpg" -> "2024_IMG_001.jpg"）
+- **格式修正**：统一替换错误字符（"文档-最终版.doc" -> "文档_v1.doc"）
+- **序列化**：将乱序文件重命名为有序列表（"file_a.txt", "file_b.txt" -> "doc_1.txt", "doc_2.txt"）
 
-## 核心参数（用户需提供）
-1. `source_path`：必填，待重命名文件所在的文件夹路径（绝对路径/相对路径均可）；
-2. `rename_rule`：必填，重命名规则，可选值：
-   - `add_prefix`：添加前缀
-   - `add_suffix`：添加后缀
-   - `replace_text`：文本替换
-   - `add_sequence`：添加连续序号
-3. `rule_params`：必填，规则对应的参数：
-   - 若 `rename_rule=add_prefix`：参数为前缀文本（如 "20240520_"）；
-   - 若 `rename_rule=add_suffix`：参数为后缀文本（如 "_v2"）；
-   - 若 `rename_rule=replace_text`：参数为列表 `[旧文本, 新文本]`（如 ["副本", ""]）；
-   - 若 `rename_rule=add_sequence`：参数为序号起始值（如 1）；
-4. `file_filter`：可选，文件类型筛选（如 ".txt,.pdf"，留空则处理所有文件）。
+## 核心参数
+1. `source_path` (string, required): 目标文件夹
+2. `rename_rule` (enum, required):
+   - "add_prefix": 加前缀
+   - "add_suffix": 加后缀
+   - "replace_text": 文本替换
+   - "add_sequence": 序号命名
+3. `rule_params` (any, required):
+   - 前/后缀: 字符串
+   - 替换: [旧词, 新词]
+   - 序号: 起始数字 (int)
+4. `file_filter` (string, optional): 文件类型筛选
 
-## 执行步骤
-1. 校验用户输入：确认 `source_path` 存在且有读写权限，`rename_rule` 为合法值；
-2. 列出目标文件夹内符合 `file_filter` 的所有文件（跳过子文件夹）；
-3. 根据 `rename_rule` 和 `rule_params` 生成新文件名：
-   - 添加前缀：新名 = 前缀 + 原文件名；
-   - 添加后缀：新名 = 原文件名（不含后缀） + 后缀 + 原后缀；
-   - 文本替换：新名 = 原文件名.replace(旧文本, 新文本)；
-   - 序号命名：新名 = 原文件名（不含后缀） + "_" + 序号 + 原后缀；
-4. 处理重复文件名：若新文件名已存在，自动添加 "-数字" 后缀（如 report_1-1.pdf）；
-5. 执行重命名操作，记录每一步结果；
-6. 返回执行报告：成功重命名数量、失败文件（含原因）、新文件名列表。
-
-## 注意事项
-1. 操作前自动备份文件名列表，若出错可回滚；
-2. 跳过系统隐藏文件和无权限的文件；
-3. 不处理子文件夹内的文件（避免误操作）；
-4. 若用户未确认，不执行重命名（需先展示预览）。
+## 示例
+**用户指令**: "给这个文件夹里的所有图片加个前缀 'Holiday_'"
+**对应参数**:
+- source_path: "Photos"
+- rename_rule: "add_prefix"
+- rule_params: "Holiday_"
+- file_filter: ".jpg,.png"
