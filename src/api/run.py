@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.routing import APIRoute
 from starlette.middleware.cors import CORSMiddleware
 
-from src.api.main import api_router
+from src.api.v1.main import api_router
 from src.config import settings
 
 
