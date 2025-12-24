@@ -1,4 +1,4 @@
-from src.agents.models import ModelManager, ModelRegistry, model_factory
+from src.agents.llm import ModelManager, ModelRegistry, model_factory
 import asyncio
 
 xf_config = {

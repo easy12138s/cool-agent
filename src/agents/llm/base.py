@@ -23,7 +23,7 @@ class BaseModel(ABC):
         pass
 
     async def stream_generate(self, prompt: str, **kwargs):
-        """Default implementation for non-streaming models (yields once)."""
+        """Default implementation for non-streaming llm (yields once)."""
         response = await self.generate(prompt, **kwargs)
         yield response
 
