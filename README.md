@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="data/images/cool-agent.png" width="100%"/>
+</p>
+
 <h1 align="center">Cool Agent</h1>
 
 <p align="center">
