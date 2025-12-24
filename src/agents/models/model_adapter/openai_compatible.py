@@ -8,8 +8,7 @@ logger = logging.getLogger(__name__)
 
 class OpenAICompatibleModel(BaseModel):
     """
-    Base class for OpenAI-compatible models (OpenAI, DeepSeek, Moonshot, etc.).
-    Uses the official AsyncOpenAI client for better performance and standard compliance.
+    兼容 OpenAI 接口的模型适配器
     """
 
     def __init__(self, config: Dict[str, Any]):
