@@ -1,6 +1,6 @@
 import os
 import shutil
-from .utils import init_batch_result, validate_path, ensure_dir, add_failed_file
+from src.utils.tool_utils import init_batch_result, validate_path, ensure_dir, add_failed_file
 
 def batch_move_files(source_path, target_path, file_filter="", move_subfolders=False, duplicate_strategy="rename"):
     """

@@ -1,5 +1,5 @@
 import os
-from .utils import init_batch_result, ensure_dir, add_failed_file
+from src.utils.tool_utils import init_batch_result, ensure_dir, add_failed_file
 
 def batch_create_files(target_path, file_template, create_count, file_content="", overwrite=False):
     """

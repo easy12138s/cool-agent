@@ -1,8 +1,6 @@
-import os
-import re
-from .utils import (
-    validate_path, get_allowed_exts, compile_regex, 
-    read_file_safe, walk_files, init_search_replace_result,
+from src.utils.tool_utils import (
+    compile_regex,
+    walk_files, init_search_replace_result,
     add_failed_file
 )
 

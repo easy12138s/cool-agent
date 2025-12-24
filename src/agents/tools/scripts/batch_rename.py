@@ -1,5 +1,5 @@
 import os
-from .utils import validate_path, get_allowed_exts, add_failed_file
+from src.utils.tool_utils import validate_path, get_allowed_exts, add_failed_file
 
 def batch_rename_files(source_path, rename_rule, rule_params, file_filter=""):
     """
