@@ -35,7 +35,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
     FRONTEND_HOST: str = "http://localhost:5173"
     ENVIRONMENT: Literal["local", "staging", "production"] = "local"
-    APP_MODE: Literal["api", "desktop", "cli"] = "api"
+    APP_MODE: Literal["api", "desktop", "desktop-tauri", "cli"] = "api"
     SERVER_HOST: str = "0.0.0.0"
     SERVER_PORT: int = 8000
 
