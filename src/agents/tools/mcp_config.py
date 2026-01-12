@@ -1,9 +1,10 @@
 """MCP配置模型"""
 
 from enum import Enum
-from typing import Optional, Dict, Any
-from pydantic import Field, field_validator, ConfigDict
-from pydantic_settings import BaseSettings
+from typing import Any, Dict, Optional
+
+from pydantic import Field, field_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class TransportType(str, Enum):
@@ -13,7 +14,7 @@ class TransportType(str, Enum):
 
 
 class MCPConfig(BaseSettings):
-    model_config = ConfigDict(
+    model_config = SettingsConfigDict(
         extra="ignore",
         validate_assignment=True,
         env_file=".env",
@@ -22,7 +23,7 @@ class MCPConfig(BaseSettings):
 
     transport: TransportType = TransportType.HTTP_SSE
     command: Optional[str] = None
-    args: list = Field(default_factory=list)
+    args: list[str] = Field(default_factory=list)
     env: Dict[str, str] = Field(default_factory=dict)
     url: Optional[str] = None
     headers: Dict[str, str] = Field(default_factory=dict)

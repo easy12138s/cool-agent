@@ -1,7 +1,11 @@
 import os
-from src.utils.tool_utils import init_batch_result, ensure_dir, add_failed_file
 
-def batch_create_files(target_path, file_template, create_count, file_content="", overwrite=False):
+from src.utils.tool_utils import add_failed_file, ensure_dir, init_batch_result
+
+
+def batch_create_files(
+    target_path, file_template, create_count, file_content="", overwrite=False
+):
     """
     批量新建文件核心函数
     """
@@ -17,10 +21,10 @@ def batch_create_files(target_path, file_template, create_count, file_content=""
 
     for i in range(1, create_count + 1):
         filename = file_template.replace("{num}", str(i))
-        illegal_chars = ["/", "\\", ":", "*", "?", "\"", "<", ">", "|"]
+        illegal_chars = ["/", "\\", ":", "*", "?", '"', "<", ">", "|"]
         for char in illegal_chars:
             filename = filename.replace(char, "_")
-        
+
         file_path = os.path.join(target_path, filename)
 
         try:
@@ -37,7 +41,7 @@ def batch_create_files(target_path, file_template, create_count, file_content=""
 
             with open(file_path, "w", encoding="utf-8") as f:
                 f.write(file_content)
-            
+
             result["success_count"] += 1
             result["created_files"].append(filename)
 
@@ -46,11 +50,12 @@ def batch_create_files(target_path, file_template, create_count, file_content=""
 
     return result
 
+
 if __name__ == "__main__":
     test_result = batch_create_files(
         target_path="/Users/yourname/Desktop/test",
         file_template="week_{num}.md",
         create_count=3,
-        file_content="# 周报模板\n## 本周完成：\n## 下周计划："
+        file_content="# 周报模板\n## 本周完成：\n## 下周计划：",
     )
     print("执行结果：", test_result)

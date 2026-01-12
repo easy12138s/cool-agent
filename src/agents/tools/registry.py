@@ -1,9 +1,10 @@
-import yaml
-import logging
-import importlib.util
 import asyncio
-from typing import Dict, List, Any, Optional
+import importlib.util
+import logging
 from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+import yaml  # type: ignore[import]
 
 from .base_tool import BaseTool
 from .mcp_client import MCPClient
@@ -25,7 +26,7 @@ class SkillTool(BaseTool):
 
         self._load_skill_md()
 
-    def _load_skill_md(self):
+    def _load_skill_md(self) -> None:
         """解析 SKILL.md 中的 YAML 元数据和参数"""
         if not self.skill_md_path.exists():
             return
@@ -71,6 +72,8 @@ class SkillTool(BaseTool):
             spec = importlib.util.spec_from_file_location(
                 "skill_script", self.script_path
             )
+            if spec is None or spec.loader is None:
+                raise ImportError(f"无法加载脚本模块: {self.script_path}")
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
 
@@ -89,7 +92,11 @@ class SkillTool(BaseTool):
 class ToolRegistry:
     """工具注册表 - 负责自动发现和管理所有工具"""
 
-    def __init__(self, skills_dir: str = None, scripts_dir: str = None):
+    def __init__(
+        self,
+        skills_dir: Optional[str] = None,
+        scripts_dir: Optional[str] = None,
+    ) -> None:
         # 默认路径
         root_dir = Path(__file__).parent.parent.parent.parent
         self.skills_dir = (
@@ -104,7 +111,7 @@ class ToolRegistry:
         self._tools: Dict[str, BaseTool] = {}
         self._mcp_clients: Dict[str, MCPClient] = {}
 
-    def scan_skills(self):
+    def scan_skills(self) -> None:
         """扫描 skills 目录并自动注册工具"""
         if not self.skills_dir.exists():
             logger.warning(f"技能目录不存在: {self.skills_dir}")

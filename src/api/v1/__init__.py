@@ -1,5 +1,3 @@
-"""API module for the Intelligent Agent Project"""
+from .routes.main import api_router
 
-from .server import app
-
-__all__ = ["app"]
+__all__ = ["api_router"]

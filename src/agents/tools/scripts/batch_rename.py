@@ -1,5 +1,7 @@
 import os
-from src.utils.tool_utils import validate_path, get_allowed_exts, add_failed_file
+
+from src.utils.tool_utils import add_failed_file, get_allowed_exts, validate_path
+
 
 def batch_rename_files(source_path, rename_rule, rule_params, file_filter=""):
     """
@@ -9,7 +11,7 @@ def batch_rename_files(source_path, rename_rule, rule_params, file_filter=""):
         "success_count": 0,
         "failed_files": [],
         "rename_map": {},  # 原文件名: 新文件名
-        "error_msg": ""
+        "error_msg": "",
     }
 
     if not validate_path(source_path, result):
@@ -20,7 +22,11 @@ def batch_rename_files(source_path, rename_rule, rule_params, file_filter=""):
 
     allowed_extensions = get_allowed_exts(file_filter)
 
-    file_list = [f for f in os.listdir(source_path) if os.path.isfile(os.path.join(source_path, f))]
+    file_list = [
+        f
+        for f in os.listdir(source_path)
+        if os.path.isfile(os.path.join(source_path, f))
+    ]
     sequence = rule_params if rename_rule == "add_sequence" else 1
 
     for filename in file_list:
@@ -52,7 +58,10 @@ def batch_rename_files(source_path, rename_rule, rule_params, file_filter=""):
                 # 避免死循环，如果新旧路径一致则跳过
                 if os.path.join(source_path, filename) == new_file_path:
                     break
-                new_filename = f"{name}_{sequence}_{counter}{ext}" if rename_rule == "add_sequence" else f"{name}_{counter}{ext}"
+                if rename_rule == "add_sequence":
+                    new_filename = f"{name}_{sequence}_{counter}{ext}"
+                else:
+                    new_filename = f"{name}_{counter}{ext}"
                 new_file_path = os.path.join(source_path, new_filename)
                 counter += 1
 
@@ -67,12 +76,13 @@ def batch_rename_files(source_path, rename_rule, rule_params, file_filter=""):
 
     return result
 
+
 if __name__ == "__main__":
     # 测试：给桌面test文件夹的txt文件添加前缀
     test_result = batch_rename_files(
         source_path="/Users/yourname/Desktop/test",
         rename_rule="add_prefix",
         rule_params="20240520_",
-        file_filter=".txt"
+        file_filter=".txt",
     )
     print("执行结果：", test_result)

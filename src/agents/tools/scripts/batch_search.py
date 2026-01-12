@@ -1,9 +1,14 @@
 from src.utils.tool_utils import (
     compile_regex,
-    read_file_safe, walk_files, init_search_replace_result
+    init_search_replace_result,
+    read_file_safe,
+    walk_files,
 )
 
-def batch_search_files(search_path, keyword, is_regex=False, file_filter="", case_sensitive=False):
+
+def batch_search_files(
+    search_path, keyword, is_regex=False, file_filter="", case_sensitive=False
+):
     """
     批量搜索文件内容核心函数
     """
@@ -35,18 +40,18 @@ def batch_search_files(search_path, keyword, is_regex=False, file_filter="", cas
 
         if matches:
             result["matched_count"] += 1
-            result["matched_files"].append({
-                "path": file_path,
-                "match_preview": f"Found {len(matches)} matches"
-            })
+            result["matched_files"].append(
+                {"path": file_path, "match_preview": f"Found {len(matches)} matches"}
+            )
 
     walk_files(search_path, allowed_exts, search_callback)
-    
+
     # 限制返回数量
     if len(result["matched_files"]) > 100:
         result["matched_files"] = result["matched_files"][:100]
 
     return result
+
 
 if __name__ == "__main__":
     # Test

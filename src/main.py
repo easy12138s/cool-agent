@@ -1,5 +1,7 @@
-import uvicorn
 import sys
+
+import uvicorn
+
 from src.config import settings
 
 
@@ -30,21 +32,29 @@ def start_desktop():
 def start_desktop_tauri():
     """启动桌面应用程序（Tauri版本）。"""
     print("正在启动 Tauri 桌面应用程序...")
-    import subprocess
     import os
+    import subprocess
 
     try:
         # 切换到 tauri 项目目录
         tauri_dir = os.path.join(os.path.dirname(__file__), "desktop-tauri")
-        
+
         # 检查 npm 是否可用
-        subprocess.run(["npm", "--version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        
+        subprocess.run(
+            ["npm", "--version"],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+
         print(f"正在 {tauri_dir} 目录下运行 'npm run tauri dev'...")
-        # 启动 tauri 开发模式
-        # 注意：在 Windows 上需要 shell=True
-        subprocess.run(["npm", "run", "tauri", "dev"], cwd=tauri_dir, shell=True, check=True)
-        
+        subprocess.run(
+            ["npm", "run", "tauri", "dev"],
+            cwd=tauri_dir,
+            shell=True,
+            check=True,
+        )
+
     except FileNotFoundError:
         print("错误: 未找到 npm，请确保已安装 Node.js。")
         sys.exit(1)
@@ -54,7 +64,6 @@ def start_desktop_tauri():
     except Exception as e:
         print(f"发生未知错误: {e}")
         sys.exit(1)
-
 
 
 def start_cli():
@@ -91,7 +100,9 @@ def main():
     elif mode == "cli":
         start_cli()
     else:
-        print(f"错误: 未知的 APP_MODE '{mode}'。期望值为 'api', 'desktop', 'desktop-tauri' 或 'cli'。")
+        print(
+            f"错误: 未知的 APP_MODE '{mode}'。期望值为 'api', 'desktop', 'desktop-tauri' 或 'cli'。"
+        )
         sys.exit(1)
 
 

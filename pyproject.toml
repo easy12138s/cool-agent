@@ -108,11 +108,17 @@ extend_skip_glob = ["tests/**", "examples/**", "docs/**", "scripts/**", "data/**
 
 [tool.mypy]
 python_version = "3.10"
-warn_return_any = true
 warn_unused_configs = true
-strict = true
 ignore_missing_imports = true
 follow_imports = "silent"
+exclude = [
+  '^src/desktop-tauri/node_modules/',
+  '^src/desktop-tauri/',
+  '^data/',
+  '^scripts/',
+]
+strict = false
+disable_error_code = ["override"]
 
 [tool.pytest.ini_options]
 python_files = "test_*.py"

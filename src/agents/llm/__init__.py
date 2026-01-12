@@ -1,8 +1,8 @@
 from .base import BaseModel
-from .registry import ModelRegistry
+from .factory import model_factory
 from .manager import ModelManager
 from .model_adapter import OpenAIModel, XFSparkModel
-from .factory import model_factory
+from .registry import ModelRegistry
 
 __all__ = [
     "BaseModel",

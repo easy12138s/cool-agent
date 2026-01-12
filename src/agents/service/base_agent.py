@@ -1,6 +1,6 @@
-from abc import ABC, abstractmethod
-from typing import Dict, Any, Union, Optional
 import string
+from abc import ABC, abstractmethod
+from typing import Any, Dict, Optional, Union
 
 
 class BaseAgent(ABC):
@@ -17,8 +17,8 @@ class BaseAgent(ABC):
         self.status = self.STATUS_IDLE
         self.error_info: Optional[str] = None
 
-    @abstractmethod
     @property
+    @abstractmethod
     def agent_card(self) -> Dict[str, Any]:
         """
         agent名片
@@ -37,8 +37,8 @@ class BaseAgent(ABC):
         """
         raise NotImplementedError("子类必须编写agent的名片信息")
 
-    @abstractmethod
     @property
+    @abstractmethod
     def sys_prompt(self) -> str:
         """
         agent系统提示词
@@ -81,21 +81,22 @@ class BaseAgent(ABC):
         """
         pass
 
-    def run(self, input_data: Any) -> Union[Dict[str, Any], str, None]:
+    async def run(self, input_data: Any) -> Union[Dict[str, Any], str, None]:
         """
         通用方法：封装Agent的完整执行流程（思考→执行）
         """
         try:
             self.status = self.STATUS_WORKING
             # 1. 思考决策
-            decision = self.think(input_data)
+            decision = await self.think(input_data)
             # 2. 执行行动
-            result = self.act(decision)
+            result = await self.act(decision)
             self.status = self.STATUS_COMPLETED
             return result
         except Exception as e:
             self.status = self.STATUS_ERROR
             self.error_info = str(e)
+            return None
 
     @staticmethod
     def format_prompt(

@@ -1,5 +1,6 @@
-from src.agents.llm import ModelManager, ModelRegistry, model_factory
 import asyncio
+
+from src.agents.llm import ModelManager, ModelRegistry, model_factory
 
 xf_config = {
     "name": "spark-lite",

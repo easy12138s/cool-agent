@@ -1,5 +1,6 @@
-from typing import Dict, Any, List, Optional
 import logging
+from typing import Any, Dict, Optional
+
 from .base_tool import BaseTool
 
 logger = logging.getLogger(__name__)

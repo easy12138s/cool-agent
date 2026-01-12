@@ -1,6 +1,7 @@
 from typing import Optional
-from .registry import ModelRegistry
+
 from .base import BaseModel
+from .registry import ModelRegistry
 
 
 class ModelManager:

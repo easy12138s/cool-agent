@@ -1,12 +1,15 @@
 """
 短期记忆模块
 """
-from typing import List, Dict, Any
+
+from typing import Any, Dict, List
+
 
 class ShortTermMemory:
     """
     短期记忆模块 - 管理当前会话的上下文
     """
+
     def __init__(self):
         self.messages: List[Dict[str, Any]] = []
 
@@ -19,7 +22,7 @@ class ShortTermMemory:
         message = {
             "role": role,
             "content": content,
-            **kwargs
+            **kwargs,
         }
         self.messages.append(message)
 
@@ -35,3 +38,5 @@ class ShortTermMemory:
         """获取最近 k 条消息"""
         return self.messages[-k:]
 
+
+__all__ = ["ShortTermMemory"]

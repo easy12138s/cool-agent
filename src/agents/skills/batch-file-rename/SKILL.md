@@ -29,12 +29,15 @@ metadata:
 ---
 
 # 批量重命名文件技能
+
 ## 适用场景
+
 - **照片整理**：添加日期前缀（"IMG_001.jpg" -> "2024_IMG_001.jpg"）
-- **格式修正**：统一替换错误字符（"文档-最终版.doc" -> "文档_v1.doc"）
+- **格式修正**：统一替换错误字符（"文档-最终版.doc" -> "文档\_v1.doc"）
 - **序列化**：将乱序文件重命名为有序列表（"file_a.txt", "file_b.txt" -> "doc_1.txt", "doc_2.txt"）
 
 ## 核心参数
+
 1. `source_path` (string, required): 目标文件夹
 2. `rename_rule` (enum, required):
    - "add_prefix": 加前缀
@@ -48,9 +51,11 @@ metadata:
 4. `file_filter` (string, optional): 文件类型筛选
 
 ## 示例
-**用户指令**: "给这个文件夹里的所有图片加个前缀 'Holiday_'"
+
+**用户指令**: "给这个文件夹里的所有图片加个前缀 'Holiday\_'"
 **对应参数**:
+
 - source_path: "Photos"
 - rename_rule: "add_prefix"
-- rule_params: "Holiday_"
+- rule*params: "Holiday*"
 - file_filter: ".jpg,.png"

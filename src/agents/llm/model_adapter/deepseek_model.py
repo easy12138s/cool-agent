@@ -1,5 +1,7 @@
-from typing import Dict, Any
+from typing import Any, Dict
+
 from src.config import env
+
 from .openai_compatible import OpenAICompatibleModel
 
 

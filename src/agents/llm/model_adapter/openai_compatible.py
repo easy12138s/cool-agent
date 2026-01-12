@@ -1,7 +1,9 @@
-from typing import Dict, Any, AsyncGenerator, List, Optional
-from ..base import BaseModel
-from openai import AsyncOpenAI
 import logging
+from typing import Any, AsyncGenerator, Dict
+
+from openai import AsyncOpenAI
+
+from ..base import BaseModel
 
 logger = logging.getLogger(__name__)
 

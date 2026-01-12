@@ -1,8 +1,9 @@
-from dotenv import load_dotenv
 import os
-from .settings import *
 
-# 加载.env文件
+from dotenv import load_dotenv
+
+from .settings import Settings, settings
+
 load_dotenv()
 
 
@@ -19,3 +20,5 @@ class Env:
 
 
 env = Env()
+
+__all__ = ["Env", "Settings", "env", "settings"]

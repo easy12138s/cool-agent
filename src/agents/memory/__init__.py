@@ -1,7 +1,7 @@
-from .short_term_memory import ShortTermMemory
-from .long_term_memory import LongTermMemory
-from .context_management import ContextManagement
 from .context_desensitization import ContextDesensitization
+from .context_management import ContextManagement
+from .long_term_memory import LongTermMemory
+from .short_term_memory import ShortTermMemory
 
 __all__ = [
     "ShortTermMemory",

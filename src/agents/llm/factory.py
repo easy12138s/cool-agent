@@ -1,10 +1,11 @@
-from typing import Dict, Any, Type
+from typing import Any, Dict
+
 from .base import BaseModel
 from .model_adapter import (
-    OpenAIModel,
-    XFSparkModel,
     DeepSeekModel,
     OpenAICompatibleModel,
+    OpenAIModel,
+    XFSparkModel,
 )
 
 
