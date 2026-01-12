@@ -2,9 +2,11 @@ from fastapi import APIRouter, WebSocket
 from pydantic import BaseModel
 from starlette.websockets import WebSocketDisconnect
 
+from src.api.v1.routes.chat import chat_router
 from src.config import settings
 
 api_router = APIRouter(tags=["main"])
+api_router.include_router(chat_router)
 
 
 class EchoRequest(BaseModel):

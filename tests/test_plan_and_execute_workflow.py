@@ -56,4 +56,3 @@ async def test_plan_and_execute_workflow_can_run_batch_create(tmp_path) -> None:
     assert report["steps"][0]["ok"] is True
     assert (tmp_path / "week_1.md").exists()
     assert (tmp_path / "week_2.md").exists()
-
