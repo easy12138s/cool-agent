@@ -99,6 +99,22 @@ def batch_move_files(
     return result
 
 
+def run(
+    source_path: str,
+    target_path: str,
+    file_filter: str = "",
+    move_subfolders: bool = False,
+    duplicate_strategy: str = "rename",
+):
+    return batch_move_files(
+        source_path=source_path,
+        target_path=target_path,
+        file_filter=file_filter,
+        move_subfolders=move_subfolders,
+        duplicate_strategy=duplicate_strategy,
+    )
+
+
 if __name__ == "__main__":
     test_result = batch_move_files(
         source_path="/Users/yourname/Desktop/test",

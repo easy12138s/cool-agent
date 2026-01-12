@@ -51,6 +51,22 @@ def batch_create_files(
     return result
 
 
+def run(
+    target_path: str,
+    file_template: str,
+    create_count: int,
+    file_content: str = "",
+    overwrite: bool = False,
+):
+    return batch_create_files(
+        target_path=target_path,
+        file_template=file_template,
+        create_count=create_count,
+        file_content=file_content,
+        overwrite=overwrite,
+    )
+
+
 if __name__ == "__main__":
     test_result = batch_create_files(
         target_path="/Users/yourname/Desktop/test",

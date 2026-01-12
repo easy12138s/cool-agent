@@ -77,6 +77,30 @@ def batch_rename_files(source_path, rename_rule, rule_params, file_filter=""):
     return result
 
 
+def run(
+    source_path: str,
+    rename_rule: str,
+    rule_params,
+    file_filter: str = "",
+):
+    parsed_rule_params = rule_params
+
+    if rename_rule == "replace_text" and isinstance(rule_params, str):
+        if ":" in rule_params:
+            old_text, new_text = rule_params.split(":", 1)
+            parsed_rule_params = [old_text, new_text]
+    elif rename_rule == "add_sequence" and isinstance(rule_params, str):
+        if rule_params.strip().isdigit():
+            parsed_rule_params = int(rule_params.strip())
+
+    return batch_rename_files(
+        source_path=source_path,
+        rename_rule=rename_rule,
+        rule_params=parsed_rule_params,
+        file_filter=file_filter,
+    )
+
+
 if __name__ == "__main__":
     # 测试：给桌面test文件夹的txt文件添加前缀
     test_result = batch_rename_files(

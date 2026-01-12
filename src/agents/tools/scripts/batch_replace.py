@@ -61,6 +61,22 @@ def batch_replace_text(search_path, old_text, new_text, file_filter="", is_regex
     return result
 
 
+def run(
+    search_path: str,
+    old_text: str,
+    new_text: str,
+    file_filter: str = "",
+    is_regex: bool = False,
+):
+    return batch_replace_text(
+        search_path=search_path,
+        old_text=old_text,
+        new_text=new_text,
+        file_filter=file_filter,
+        is_regex=is_regex,
+    )
+
+
 if __name__ == "__main__":
     # Test
     pass

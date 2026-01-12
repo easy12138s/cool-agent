@@ -1,4 +1,3 @@
-import string
 from abc import ABC, abstractmethod
 from typing import Any, Dict, Optional, Union
 
@@ -105,12 +104,12 @@ class BaseAgent(ABC):
         """
         通用方法：动态拼接提示词，替换模板中的占位符
         """
+
+        class _SafeDict(dict):
+            def __missing__(self, key: str) -> Any:
+                return default
+
         try:
-            template = string.Template(prompt_template)
-            full_placeholders = {
-                placeholder: placeholder_dict.get(placeholder, default)
-                for placeholder in template.pattern.findall(prompt_template)
-            }
-            return template.safe_substitute(full_placeholders)
+            return prompt_template.format_map(_SafeDict(placeholder_dict))
         except Exception as e:
             raise RuntimeError(f"提示词拼接失败：{e}") from e

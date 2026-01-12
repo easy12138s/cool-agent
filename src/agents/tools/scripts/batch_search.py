@@ -53,6 +53,22 @@ def batch_search_files(
     return result
 
 
+def run(
+    search_path: str,
+    keyword: str,
+    is_regex: bool = False,
+    file_filter: str = "",
+    case_sensitive: bool = False,
+):
+    return batch_search_files(
+        search_path=search_path,
+        keyword=keyword,
+        is_regex=is_regex,
+        file_filter=file_filter,
+        case_sensitive=case_sensitive,
+    )
+
+
 if __name__ == "__main__":
     # Test
     print(batch_search_files(".", "TODO", file_filter=".py"))
