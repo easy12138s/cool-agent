@@ -82,7 +82,7 @@ class ReActAgent(BaseAgent):
         )
 
         # 调用模型 - 非流式生成
-        response = await self.model.generate(prompt)
+        response = await self.model.generate_with_retry(prompt)
         return response
 
     async def act(self, decision: str) -> tuple[str, str, bool]:

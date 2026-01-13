@@ -6,8 +6,8 @@ from typing import Any, Dict, Literal, Optional
 from src.agents.llm import model_factory
 from src.agents.llm.base import BaseModel
 from src.agents.prompt.react import REACT_PROMPT
-from src.agents.tools.registry import ToolRegistry
 from src.agents.service.base_agent import BaseAgent
+from src.agents.tools.registry import ToolRegistry
 
 
 @dataclass(frozen=True)

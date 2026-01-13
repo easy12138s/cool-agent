@@ -4,7 +4,6 @@ from datetime import datetime, timezone
 from typing import Any, Dict, List, Literal, Optional
 from uuid import uuid4
 
-
 Role = Literal["system", "user", "assistant"]
 
 
@@ -183,4 +182,3 @@ class InMemoryChatStore:
                 approvals = [a for a in approvals if a.status == status]
             approvals.sort(key=lambda a: a.created_at, reverse=True)
             return approvals
-

@@ -36,7 +36,7 @@ class PlanAndExecuteWorkflow(BaseWorkflow):
         )
         plan_prompt = self._wrap_json_plan_instructions(plan_prompt)
 
-        raw_plan = await self.model.generate(plan_prompt)
+        raw_plan = await self.model.generate_with_retry(plan_prompt)
         steps = self._parse_plan_steps(raw_plan)
 
         executed_steps: List[Dict[str, Any]] = []

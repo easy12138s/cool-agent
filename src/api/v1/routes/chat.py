@@ -13,7 +13,6 @@ from src.api.v1.chat_engine import (
 )
 from src.api.v1.chat_store import InMemoryChatStore
 
-
 chat_router = APIRouter(prefix="/chat", tags=["chat"])
 
 
@@ -74,6 +73,7 @@ class ResolveApprovalResponse(BaseModel):
     assistant: str = ""
     tool_call: Optional[ToolCallRequest] = None
     error: str = ""
+
 
 class ToolInfo(BaseModel):
     name: str
@@ -208,7 +208,7 @@ async def send_message(
             tools_desc=tools_desc,
             tool_names=tool_names,
         )
-        decision = await model.generate(prompt)
+        decision = await model.generate_with_retry(prompt)
         scratchpad = f"{scratchpad}{decision}\n"
 
         parsed = parse_react_decision(decision)
@@ -323,7 +323,7 @@ async def resolve_approval(
             tools_desc=tools_desc,
             tool_names=tool_names,
         )
-        decision = await model.generate(prompt)
+        decision = await model.generate_with_retry(prompt)
         scratchpad = f"{scratchpad}{decision}\n"
 
         parsed = parse_react_decision(decision)
@@ -373,4 +373,3 @@ async def resolve_approval(
         status="invalid_decision",
         error=last_error or "agent exceeded max iterations",
     )
-
