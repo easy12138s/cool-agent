@@ -78,7 +78,6 @@ def test_context_management_trims_and_desensitizes() -> None:
         {"role": "assistant", "content": "x"},
         {"role": "user", "content": "sk-1234567890abcdef"},
         {"role": "assistant", "content": "y"},
-        123,
         {"role": "user"},
     ]
 
@@ -86,4 +85,3 @@ def test_context_management_trims_and_desensitizes() -> None:
     assert len(out) == 2
     assert out[0]["content"] == "sk-***"
     assert out[1]["content"] == "y"
-

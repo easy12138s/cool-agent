@@ -1,7 +1,7 @@
 import json
 import logging
 import re
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Set
 
 from ..llm.base import BaseModel
 from ..memory.short_term_memory import ShortTermMemory
@@ -23,21 +23,25 @@ class ReActAgent(BaseAgent):
         tools: ToolRegistry,
         memory: Optional[ShortTermMemory] = None,
         max_iterations: int = 10,
+        allowed_tools: Optional[Set[str]] = None,
     ):
         super().__init__()
         self.model = model
         self.tools = tools
         self.memory = memory or ShortTermMemory()
         self.max_iterations = max_iterations
+        self.allowed_tools = allowed_tools
 
     @property
     def agent_card(self) -> Dict[str, Any]:
+        tool_list = self.tools.list_tools()
+        if self.allowed_tools is not None:
+            tool_list = [t for t in tool_list if t.name in self.allowed_tools]
         return {
             "name": "Cool ReAct Agent",
             "description": "基于 ReAct 模式的通用智能助手",
             "skill_list": [
-                {"tool": t.name, "tool_description": t.description}
-                for t in self.tools.list_tools()
+                {"tool": t.name, "tool_description": t.description} for t in tool_list
             ],
             "permission": "local",
         }
@@ -47,8 +51,9 @@ class ReActAgent(BaseAgent):
         return REACT_PROMPT
 
     def _format_tools(self) -> tuple[str, str]:
-        """格式化工具描述和名称列表"""
         tool_list = self.tools.list_tools()
+        if self.allowed_tools is not None:
+            tool_list = [t for t in tool_list if t.name in self.allowed_tools]
         tools_desc = []
         tool_names = []
 
@@ -81,7 +86,6 @@ class ReActAgent(BaseAgent):
             },
         )
 
-        # 调用模型 - 非流式生成
         response = await self.model.generate_with_retry(prompt)
         return response
 
@@ -105,6 +109,9 @@ class ReActAgent(BaseAgent):
         if action_match and action_input_match:
             tool_name = action_match.group(1).strip()
             input_str = action_input_match.group(1).strip()
+
+            if self.allowed_tools is not None and tool_name not in self.allowed_tools:
+                return tool_name, f"Error: Tool '{tool_name}' is not allowed.", False
 
             # 清理可能的 Markdown 代码块标记
             input_str = input_str.strip("`")

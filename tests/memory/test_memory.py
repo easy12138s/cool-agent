@@ -1,5 +1,3 @@
-import pytest
-
 from src.agents.memory.context_desensitization import ContextDesensitization
 from src.agents.memory.context_management import ContextManagement
 from src.agents.memory.long_term_memory import LongTermMemory
@@ -33,4 +31,3 @@ def test_long_term_memory_add_and_search() -> None:
     res = mem.search("合同", limit=5)
     assert len(res) == 1
     assert "合同" in res[0]["content"]
-
